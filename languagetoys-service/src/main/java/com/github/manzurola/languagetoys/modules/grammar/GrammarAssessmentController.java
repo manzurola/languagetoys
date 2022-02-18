@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/v1/grammar")
+@RequestMapping("/api/v1/grammar/assess")
 public class GrammarAssessmentController {
 
     private static final Logger logger = LoggerFactory.getLogger(
@@ -19,7 +19,6 @@ public class GrammarAssessmentController {
     }
 
     @PostMapping(
-        value = "/assess",
         consumes = "application/json",
         produces = "application/json"
     )
