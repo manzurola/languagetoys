@@ -60,58 +60,60 @@ public class E2ETest {
 
         String expectedResponse = """
             {
-              "score" : 1.0,
-              "words" : [ {
-                "source" : [ {
-                  "text" : "A",
-                  "spaceAfter" : " "
-                } ],
-                "target" : [ {
-                  "text" : "A",
-                  "spaceAfter" : " "
-                } ],
-                "operation" : "equal"
-              }, {
-                "source" : [ {
-                  "text" : "student",
-                  "spaceAfter" : " "
-                } ],
-                "target" : [ {
-                  "text" : "student",
-                  "spaceAfter" : " "
-                } ],
-                "operation" : "equal"
-              }, {
-                "source" : [ {
-                  "text" : "is",
-                  "spaceAfter" : " "
-                } ],
-                "target" : [ {
-                  "text" : "is",
-                  "spaceAfter" : " "
-                } ],
-                "operation" : "equal"
-              }, {
-                "source" : [ {
-                  "text" : "happy",
-                  "spaceAfter" : ""
-                } ],
-                "target" : [ {
-                  "text" : "happy",
-                  "spaceAfter" : ""
-                } ],
-                "operation" : "equal"
-              }, {
-                "source" : [ {
-                  "text" : ".",
-                  "spaceAfter" : ""
-                } ],
-                "target" : [ {
-                  "text" : ".",
-                  "spaceAfter" : ""
-                } ],
-                "operation" : "equal"
-              } ]
+              "scoredAnswer" : {
+                "score" : 1.0,
+                "edits" : [ {
+                  "source" : [ {
+                    "text" : "A",
+                    "spaceAfter" : " "
+                  } ],
+                  "target" : [ {
+                    "text" : "A",
+                    "spaceAfter" : " "
+                  } ],
+                  "operation" : "equal"
+                }, {
+                  "source" : [ {
+                    "text" : "student",
+                    "spaceAfter" : " "
+                  } ],
+                  "target" : [ {
+                    "text" : "student",
+                    "spaceAfter" : " "
+                  } ],
+                  "operation" : "equal"
+                }, {
+                  "source" : [ {
+                    "text" : "is",
+                    "spaceAfter" : " "
+                  } ],
+                  "target" : [ {
+                    "text" : "is",
+                    "spaceAfter" : " "
+                  } ],
+                  "operation" : "equal"
+                }, {
+                  "source" : [ {
+                    "text" : "happy",
+                    "spaceAfter" : ""
+                  } ],
+                  "target" : [ {
+                    "text" : "happy",
+                    "spaceAfter" : ""
+                  } ],
+                  "operation" : "equal"
+                }, {
+                  "source" : [ {
+                    "text" : ".",
+                    "spaceAfter" : ""
+                  } ],
+                  "target" : [ {
+                    "text" : ".",
+                    "spaceAfter" : ""
+                  } ],
+                  "operation" : "equal"
+                } ]
+              }
             }
             """;
 
@@ -147,66 +149,68 @@ public class E2ETest {
 
         String expectedResponse = """
             {
-              "score" : -0.040000000000000036,
-              "words" : [ {
-                "source" : [ {
-                  "text" : "a",
-                  "spaceAfter" : " "
-                } ],
-                "target" : [ {
-                  "text" : "A",
-                  "spaceAfter" : " "
-                } ],
-                "operation" : "substitute",
-                "error" : {
-                  "id" : "replacement-orthography",
-                  "type" : "replacement",
-                  "category" : "orthography"
-                }
-              }, {
-                "source" : [ {
-                  "text" : "students",
-                  "spaceAfter" : " "
+              "scoredAnswer" : {
+                "score" : -0.040000000000000036,
+                "edits" : [ {
+                  "source" : [ {
+                    "text" : "a",
+                    "spaceAfter" : " "
+                  } ],
+                  "target" : [ {
+                    "text" : "A",
+                    "spaceAfter" : " "
+                  } ],
+                  "operation" : "substitute",
+                  "error" : {
+                    "id" : "replacement-orthography",
+                    "type" : "replacement",
+                    "category" : "orthography"
+                  }
                 }, {
-                  "text" : "are",
-                  "spaceAfter" : " "
-                } ],
-                "target" : [ {
-                  "text" : "student",
-                  "spaceAfter" : " "
+                  "source" : [ {
+                    "text" : "students",
+                    "spaceAfter" : " "
+                  }, {
+                    "text" : "are",
+                    "spaceAfter" : " "
+                  } ],
+                  "target" : [ {
+                    "text" : "student",
+                    "spaceAfter" : " "
+                  }, {
+                    "text" : "is",
+                    "spaceAfter" : " "
+                  } ],
+                  "operation" : "substitute",
+                  "error" : {
+                    "id" : "replacement-other",
+                    "type" : "replacement",
+                    "category" : "other"
+                  }
                 }, {
-                  "text" : "is",
-                  "spaceAfter" : " "
-                } ],
-                "operation" : "substitute",
-                "error" : {
-                  "id" : "replacement-other",
-                  "type" : "replacement",
-                  "category" : "other"
-                }
-              }, {
-                "source" : [ {
-                  "text" : "happy",
-                  "spaceAfter" : ""
-                } ],
-                "target" : [ {
-                  "text" : "happy",
-                  "spaceAfter" : ""
-                } ],
-                "operation" : "equal"
-              }, {
-                "source" : [ ],
-                "target" : [ {
-                  "text" : ".",
-                  "spaceAfter" : ""
-                } ],
-                "operation" : "insert",
-                "error" : {
-                  "id" : "missing-punctuation",
-                  "type" : "missing",
-                  "category" : "punctuation"
-                }
-              } ]
+                  "source" : [ {
+                    "text" : "happy",
+                    "spaceAfter" : ""
+                  } ],
+                  "target" : [ {
+                    "text" : "happy",
+                    "spaceAfter" : ""
+                  } ],
+                  "operation" : "equal"
+                }, {
+                  "source" : [ ],
+                  "target" : [ {
+                    "text" : ".",
+                    "spaceAfter" : ""
+                  } ],
+                  "operation" : "insert",
+                  "error" : {
+                    "id" : "missing-punctuation",
+                    "type" : "missing",
+                    "category" : "punctuation"
+                  }
+                } ]
+              }
             }
             """;
 
