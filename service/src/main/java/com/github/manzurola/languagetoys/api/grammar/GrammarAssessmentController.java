@@ -1,4 +1,4 @@
-package com.github.manzurola.languagetoys.modules.grammar;
+package com.github.manzurola.languagetoys.api.grammar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

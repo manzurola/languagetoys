@@ -1,4 +1,4 @@
-package com.github.manzurola.languagetoys.modules.grammar;
+package com.github.manzurola.languagetoys.api.grammar;
 
 import com.github.manzurola.errant4j.core.Annotation;
 import com.github.manzurola.errant4j.core.errors.ErrorCategory;

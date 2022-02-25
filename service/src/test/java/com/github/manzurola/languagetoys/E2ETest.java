@@ -60,69 +60,58 @@ public class E2ETest {
 
         String expectedResponse = """
             {
-              "score": 1.0,
-              "words": [
-                {
-                  "source": {
-                    "text": "A",
-                    "spaceAfter": " "
-                  },
-                  "target": {
-                    "text": "A",
-                    "spaceAfter": " "
-                  },
-                  "correction": "NONE",
-                  "error": "E:OTHER"
-                },
-                {
-                  "source": {
-                    "text": "student",
-                    "spaceAfter": " "
-                  },
-                  "target": {
-                    "text": "student",
-                    "spaceAfter": " "
-                  },
-                  "correction": "NONE",
-                  "error": "E:OTHER"
-                },
-                {
-                  "source": {
-                    "text": "is",
-                    "spaceAfter": " "
-                  },
-                  "target": {
-                    "text": "is",
-                    "spaceAfter": " "
-                  },
-                  "correction": "NONE",
-                  "error": "E:OTHER"
-                },
-                {
-                  "source": {
-                    "text": "happy",
-                    "spaceAfter": ""
-                  },
-                  "target": {
-                    "text": "happy",
-                    "spaceAfter": ""
-                  },
-                  "correction": "NONE",
-                  "error": "E:OTHER"
-                },
-                {
-                  "source": {
-                    "text": ".",
-                    "spaceAfter": ""
-                  },
-                  "target": {
-                    "text": ".",
-                    "spaceAfter": ""
-                  },
-                  "correction": "NONE",
-                  "error": "E:OTHER"
-                }
-              ]
+              "score" : 1.0,
+              "words" : [ {
+                "source" : [ {
+                  "text" : "A",
+                  "spaceAfter" : " "
+                } ],
+                "target" : [ {
+                  "text" : "A",
+                  "spaceAfter" : " "
+                } ],
+                "operation" : "equal"
+              }, {
+                "source" : [ {
+                  "text" : "student",
+                  "spaceAfter" : " "
+                } ],
+                "target" : [ {
+                  "text" : "student",
+                  "spaceAfter" : " "
+                } ],
+                "operation" : "equal"
+              }, {
+                "source" : [ {
+                  "text" : "is",
+                  "spaceAfter" : " "
+                } ],
+                "target" : [ {
+                  "text" : "is",
+                  "spaceAfter" : " "
+                } ],
+                "operation" : "equal"
+              }, {
+                "source" : [ {
+                  "text" : "happy",
+                  "spaceAfter" : ""
+                } ],
+                "target" : [ {
+                  "text" : "happy",
+                  "spaceAfter" : ""
+                } ],
+                "operation" : "equal"
+              }, {
+                "source" : [ {
+                  "text" : ".",
+                  "spaceAfter" : ""
+                } ],
+                "target" : [ {
+                  "text" : ".",
+                  "spaceAfter" : ""
+                } ],
+                "operation" : "equal"
+              } ]
             }
             """;
 
@@ -142,7 +131,8 @@ public class E2ETest {
     }
 
     @Test
-    public void givenIncorrectAnswer_properErrorsAreShown() throws JsonProcessingException {
+    public void givenIncorrectAnswer_properErrorsAreShown() throws
+                                                            JsonProcessingException {
         String request = """
             {
             	"question": {
@@ -159,49 +149,63 @@ public class E2ETest {
             {
               "score" : -0.040000000000000036,
               "words" : [ {
-                "source" : {
+                "source" : [ {
                   "text" : "a",
                   "spaceAfter" : " "
-                },
-                "target" : {
+                } ],
+                "target" : [ {
                   "text" : "A",
                   "spaceAfter" : " "
-                },
-                "correction" : "SUBSTITUTE",
-                "error" : "R:ORTHOGRAPHY"
+                } ],
+                "operation" : "substitute",
+                "error" : {
+                  "id" : "replacement-orthography",
+                  "type" : "replacement",
+                  "category" : "orthography"
+                }
               }, {
-                "source" : {
-                  "text" : "students are",
+                "source" : [ {
+                  "text" : "students",
                   "spaceAfter" : " "
-                },
-                "target" : {
-                  "text" : "student is",
+                }, {
+                  "text" : "are",
                   "spaceAfter" : " "
-                },
-                "correction" : "SUBSTITUTE",
-                "error" : "R:OTHER"
+                } ],
+                "target" : [ {
+                  "text" : "student",
+                  "spaceAfter" : " "
+                }, {
+                  "text" : "is",
+                  "spaceAfter" : " "
+                } ],
+                "operation" : "substitute",
+                "error" : {
+                  "id" : "replacement-other",
+                  "type" : "replacement",
+                  "category" : "other"
+                }
               }, {
-                "source" : {
+                "source" : [ {
                   "text" : "happy",
                   "spaceAfter" : ""
-                },
-                "target" : {
+                } ],
+                "target" : [ {
                   "text" : "happy",
                   "spaceAfter" : ""
-                },
-                "correction" : "NONE",
-                "error" : "E:OTHER"
+                } ],
+                "operation" : "equal"
               }, {
-                "source" : {
-                  "text" : "",
-                  "spaceAfter" : ""
-                },
-                "target" : {
+                "source" : [ ],
+                "target" : [ {
                   "text" : ".",
                   "spaceAfter" : ""
-                },
-                "correction" : "INSERT",
-                "error" : "M:PUNCTUATION"
+                } ],
+                "operation" : "insert",
+                "error" : {
+                  "id" : "missing-punctuation",
+                  "type" : "missing",
+                  "category" : "punctuation"
+                }
               } ]
             }
             """;

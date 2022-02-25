@@ -1,14 +1,15 @@
-package com.github.manzurola.languagetoys.modules.grammar;
+package com.github.manzurola.languagetoys.api.grammar;
 
-import com.github.manzurola.aligner.edit.Operation;
 import com.github.manzurola.errant4j.core.Annotation;
 import com.github.manzurola.errant4j.core.Annotator;
+import com.github.manzurola.errant4j.core.errors.GrammaticalError;
 import com.github.manzurola.spacy4j.api.containers.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GrammarAssessmentService {
@@ -34,31 +35,36 @@ public class GrammarAssessmentService {
         List<Token> target = annotator.parse(question.target()).tokens();
         List<Token> input = annotator.parse(answer.input()).tokens();
 
-        List<Annotation> sourceTarget = annotator.annotate(
-            source,
-            target
-        );
+        List<com.github.manzurola.errant4j.core.Annotation> sourceTarget =
+            annotator.annotate(
+                source,
+                target
+            );
         List<Token> importantTargetTokens = sourceTarget
             .stream()
             .filter(annotation -> !annotation.error().isNone())
-            .map(Annotation::targetTokens)
+            .map(com.github.manzurola.errant4j.core.Annotation::targetTokens)
             .flatMap(Collection::stream)
             .collect(Collectors.toList());
 
-        List<Annotation> inputTarget = annotator.annotate(
-            input,
-            target
-        );
-        List<WordEdit> words = inputTarget
+        List<com.github.manzurola.errant4j.core.Annotation> inputTarget =
+            annotator.annotate(
+                input,
+                target
+            );
+        List<Edit> words = inputTarget
             .stream()
             .map(annotation -> {
-                var correction = mapToCorrectionOperation(annotation
-                    .edit()
-                    .operation());
-                var sourceWord = createWord(annotation.sourceTokens());
-                var targetWord = createWord(annotation.targetTokens());
-                var error = annotation.error().tag();
-                return new WordEdit(sourceWord, targetWord, correction, error);
+                List<Word> sourceWords = getWords(annotation.sourceTokens());
+                List<Word> targetWords = getWords(annotation.targetTokens());
+                Optional<Error> error = getError(annotation);
+                String operation = getOperation(annotation);
+                return new Edit(
+                    sourceWords,
+                    targetWords,
+                    operation,
+                    error
+                );
             })
             .collect(Collectors.toList());
         double penalty = inputTarget
@@ -80,33 +86,35 @@ public class GrammarAssessmentService {
 
         GrammarAssessmentResponse response =
             new GrammarAssessmentResponse(
-            score,
-            words
-        );
+                score,
+                words
+            );
         logger.info(response.toString());
         return response;
     }
 
-    private Correction mapToCorrectionOperation(Operation operation) {
-        return switch (operation) {
-            case EQUAL -> Correction.NONE;
-            case INSERT -> Correction.INSERT;
-            case DELETE -> Correction.DELETE;
-            case SUBSTITUTE -> Correction.SUBSTITUTE;
-            case TRANSPOSE -> Correction.TRANSPOSE;
-        };
+    private String getOperation(Annotation annotation) {
+        return annotation.edit().operation().name().toLowerCase();
     }
 
-    private Word createWord(List<Token> tokens) {
-        if (tokens.isEmpty()) {
-            return new Word("", "");
+    private Optional<Error> getError(Annotation annotation) {
+        GrammaticalError error = annotation.error();
+        if (error.isNone() || error.isIgnored()) {
+            return Optional.empty();
         }
-        Token last = tokens.get(tokens.size() - 1);
-        String text = tokens
+        String category = error.category().tag().toLowerCase();
+        String type = error.type().name().toLowerCase();
+        String id = String.format("%s-%s", type, category);
+        return Optional.of(new Error(id, type, category));
+    }
+
+    private List<Word> getWords(List<Token> tokens) {
+        if (tokens.isEmpty()) {
+            return List.of();
+        }
+        return tokens
             .stream()
-            .map(token -> token.text() + token.spaceAfter())
-            .collect(Collectors.joining())
-            .trim();
-        return new Word(text, last.spaceAfter());
+            .map(token -> new Word(token.text(), token.spaceAfter()))
+            .collect(Collectors.toList());
     }
 }
