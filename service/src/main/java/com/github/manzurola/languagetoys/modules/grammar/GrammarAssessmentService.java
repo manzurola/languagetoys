@@ -28,9 +28,11 @@ public class GrammarAssessmentService {
 
     public GrammarAssessmentResponse assess(GrammarAssessmentRequest request) {
         logger.info("here " + request);
-        List<Token> source = annotator.parse(request.source()).tokens();
-        List<Token> target = annotator.parse(request.target()).tokens();
-        List<Token> input = annotator.parse(request.input()).tokens();
+        Question question = request.question();
+        Answer answer = request.answer();
+        List<Token> source = annotator.parse(question.source()).tokens();
+        List<Token> target = annotator.parse(question.target()).tokens();
+        List<Token> input = annotator.parse(answer.input()).tokens();
 
         List<Annotation> sourceTarget = annotator.annotate(
             source,
