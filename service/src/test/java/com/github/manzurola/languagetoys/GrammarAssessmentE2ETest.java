@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     classes = App.class)
-public class E2ETest {
+public class GrammarAssessmentE2ETest {
 
     @LocalServerPort
     private int port;
