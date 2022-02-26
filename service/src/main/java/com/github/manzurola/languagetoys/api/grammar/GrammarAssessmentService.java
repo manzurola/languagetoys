@@ -85,10 +85,7 @@ public class GrammarAssessmentService {
         double score = 1 - penalty;
 
         GrammarAssessmentResponse response =
-            new GrammarAssessmentResponse(
-                score,
-                words
-            );
+            new GrammarAssessmentResponse(new ScoredAnswer(score, words));
         logger.info(response.toString());
         return response;
     }
